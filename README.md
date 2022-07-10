@@ -1,4 +1,4 @@
-Bond Interest Payment Dates
+1. Bond Interest Payment Dates
 
 ● Developed an API that displays bond interest payment dates
 
@@ -6,7 +6,7 @@ Bond Interest Payment Dates
 
 ● Added a function so that payment dates do not fall on Saturdays and Sundays
 
-Creating a Bond Purchase Order
+2. Creating a Bond Purchase Order
 
 ● Getting the following data with the API via POST
 
@@ -14,7 +14,7 @@ Creating a Bond Purchase Order
 
 ● Number of bonds received | digit
 
-Bond Order Interest Payments
+3. Bond Order Interest Payments
 
 ● The difference between the order date and the next interest payment was found and the number of days past was calculated
 
