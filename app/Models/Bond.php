@@ -12,4 +12,9 @@ class Bond extends Model
     protected $guarded = ['id'];
 
     const UPDATED_AT = null;
+
+   protected $casts = [
+       'interest_payment_date'  => 'date:Y-m-d',
+
+   ];
 }

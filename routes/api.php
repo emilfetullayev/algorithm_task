@@ -20,9 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 
-Route::get('bond/payouts/{id}', [App\Http\Controllers\BondController::class, 'index']);
-
-
-Route::post('bond/orden/{id}', [App\Http\Controllers\OrderController::class, 'store']);
-Route::post('bond/order/{order_id}', [App\Http\Controllers\OrderController::class, 'storePercent']);
-
+Route::group(['prefix' => 'bond'], function(){
+    Route::get('payouts/{id}', [App\Http\Controllers\BondController::class, 'index']);
+    Route::post('orden/{id}', [App\Http\Controllers\OrderController::class, 'store']);
+    Route::post('order/{order_id}', [App\Http\Controllers\OrderController::class, 'storePercent']);
+});

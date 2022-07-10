@@ -11,40 +11,54 @@ use Carbon\Carbon;
 
 class OrderController extends Controller
 {
-    public function store(Request $request, int $id){
-        $bonds = Bond::find($id);
-        $orders = new Order;
-        $val = $bonds->interest_payment_date;
-        $val2 =$bonds->issue_date;
-        $orders->bond_number = $request->input('bond_number');
+    public function store(Request $request){
+        $mytime = Carbon::now();
+        $mytimeConvert  = $mytime->toDateTimeString();
+        $issue_value    = Bond::select('issue_date')->orderBy('issue_date', 'desc')->first();
+        $turnover_value = Bond::select('turnover_date')->orderBy('turnover_date', 'desc')->first();
 
+        $stringConvert  =  (string) $issue_value->issue_date;
+        $stringConvert2 =  (string) $turnover_value->turnover_date;
 
-       $nbofsale = DB::table('orders')
-              ->where('brand_id', $brandid)
-              ->where('eodata', '>', Carbon::now()->startOfDay());
-              ->get();
-
-//         $orders->save();
-        return $orders;
+        if($stringConvert < $mytimeConvert and $stringConvert2 > $mytimeConvert) {
+              $orders = new Order();
+              $orders->bond_number = $request->input('bond_number');
+              $orders->save();
+              return $orders;
+        }
+        else {
+             echo "Alış tarixi Emissiya tarixindən az və Son tədavül tarixindən çox ola bilməz!";
+        }
     }
 
-    public function storePercent(Request $request, int $id){
+    public function storePercent(Request $request, int $id) {
         $bonds = Bond::find($id);
-        $order_payment = Order::find($id);
-        $order_payments = OrderPayment::find($id);
+        $order_find = Order::find($id);
+        $order_payments = new OrderPayment();
+        $result =  OrderPayment::all(['order_payment_date', 'amount']);
 
-        $order_date = strtotime($order_payment->order_date);
-        $order = strtotime($bonds->interest_payment_date);
+        $payment_date = OrderPayment::select('order_payment_date')->orderBy('order_payment_date', 'desc')->first();
+        $stringConvert =  (string) $payment_date->order_payment_date;
+
+        $order_date = strtotime($order_find->order_date);
+        $interest_payment_date = strtotime($bonds->interest_payment_date);
+        $check   = strtotime($stringConvert);
+
         $startDate = Carbon::parse($order_date);
-        $endDate   = Carbon::parse($order);
-        $diff = $endDate->diffInDays($startDate);
-        $faizler = ($bonds->nominal_price / 100 * $bonds->coupon_rate) / $bonds->calculation_period * $diff * $order_payment->bond_number;
+        $endDate   = Carbon::parse($interest_payment_date);
+        $diff      = $endDate->diffInDays($startDate);
 
-        $order_payments->amount = $faizler;
+        if($check != Null) {
+          $endDate   = Carbon::parse($check);
+          $diff      = $endDate->diffInDays($startDate);
+        }
+
+        $rates = ($bonds->nominal_price / 100 * $bonds->coupon_rate) / $bonds->calculation_period * $diff * $order_find->bond_number;
+        $order_payments->amount = $rates;
         $order_payments->save();
 
-        return $order_payments;
+        return $result;
 
-}
+    }
 
 }

@@ -15,8 +15,8 @@ class CreateOrderPaymentsTable extends Migration
     {
         Schema::create('order_payments', function (Blueprint $table) {
             $table->id();
-            $table->integer('order_payment_date');
             $table->integer('amount');
+            $table->integer('order_payment_date');
         });
     }
 
