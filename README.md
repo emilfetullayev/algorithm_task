@@ -5,6 +5,7 @@
     ● Period based on "Frequency of coupon payment" and "Period of interest calculation". was calculated
 
     ● Added a function so that payment dates do not fall on Saturdays and Sundays
+    
 
 2. Creating a Bond Purchase Order
 
@@ -13,6 +14,7 @@
    ● Order date | Y-m-d
 
    ● Number of bonds received | digit
+   
 
 3. Bond Order Interest Payments
 
