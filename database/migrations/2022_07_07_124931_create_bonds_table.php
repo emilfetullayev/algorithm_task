@@ -19,6 +19,7 @@ class CreateBondsTable extends Migration
             $table->integer('payment_frequency');
             $table->integer('calculation_period');
             $table->integer('coupon_rate');
+            $table->string('interest_payment_date')->nullable();
             $table->timestamp('turnover_date')->nullable();
             $table->timestamp('issue_date')->default(DB::raw('CURRENT_TIMESTAMP'));
 
